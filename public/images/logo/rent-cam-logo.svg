@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="250" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style type="text/css">
+      <![CDATA[
+        .title { font: bold 48px sans-serif; fill: black; }
+        .camera-body { fill: #7a9c9c; stroke: black; stroke-width: 2; }
+        .camera-top { fill: #cccccc; stroke: black; stroke-width: 2; }
+        .lens { fill: black; stroke: #666666; stroke-width: 10; }
+        .lens-glow { fill: white; }
+        .click-label { font: bold 16px sans-serif; fill: black; }
+      ]]>
+    </style>
+  </defs>
+
+  <!-- Camera body -->
+  <rect x="50" y="60" width="180" height="100" rx="10" ry="10" class="camera-body"/>
+  <rect x="50" y="40" width="180" height="30" rx="5" ry="5" class="camera-top"/>
+
+  <!-- Lens -->
+  <circle cx="140" cy="110" r="30" class="lens"/>
+  <circle cx="128" cy="95" r="8" class="lens-glow"/>
+
+  <!-- Top Button -->
+  <rect x="200" y="30" width="20" height="15" fill="black" />
+
+  <!-- CLICK text -->
+  <text x="60" y="60" class="click-label">CLICK</text>
+
+  <!-- Title -->
+  <text x="250" y="130" class="title">RENT-CAM</text>
+</svg>
