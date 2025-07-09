@@ -1,5 +1,5 @@
 import { getEndpoints } from "../config/config";
-import { BookingModel } from "../model/booking";
+import { BookingModel, DetailBookingModel } from "../model/booking";
 
 const BookingService = {
   async getAllBookings(token: string): Promise<BookingModel[]> {
@@ -36,7 +36,7 @@ const BookingService = {
     const json = await res.json();
     return json.data || [];
   },
-  async getBookingById(id: string, token: string): Promise<BookingModel> {
+  async getBookingById(id: string, token: string): Promise<DetailBookingModel> {
     const { booking } = getEndpoints();
     const res = await fetch(`${booking.base}/${id}`, {
       headers: {

@@ -44,7 +44,7 @@ export default function CameraView() {
     setCameraToDelete(cameraId);
     setIsDeleteModalOpen(true);
   };
-
+  const handleSearch = () => {};
   return (
     <>
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
@@ -57,12 +57,24 @@ export default function CameraView() {
               <h3 className="text-sm font-medium text-gray-800 dark:text-white/90">
                 Total Data : {camera?.length}
               </h3>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-                onClick={() => setIsCreateModalOpen(true)}
-              >
-                Tambah Camera
-              </button>
+              <div style={{gap: "10px", display: "flex"}}>
+                <input
+                  placeholder="search camera"
+                  style={{
+                    borderRadius: "10px",
+                    width: "300px",
+                    border: "1px solid #ccc",
+                    padding: "8px",
+                  }}
+                  onClick={handleSearch}
+                />
+                <button
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                  onClick={() => setIsCreateModalOpen(true)}
+                >
+                  Tambah Camera
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -159,19 +171,19 @@ export default function CameraView() {
                           className="text-blue-500 hover:text-blue-700"
                           onClick={() => handleEdit(product)}
                         >
-                          <FaEdit size={20}/>
+                          <FaEdit size={20} />
                         </button>
                         <button
                           className="text-red-500 hover:text-red-700"
                           onClick={() => handleDelete(product.id)}
                         >
-                          <MdDelete size={20}/>
+                          <MdDelete size={20} />
                         </button>
                         <button
                           className="text-green-500 hover:text-green-700"
                           onClick={() => navigate(product.id)}
                         >
-                          <IoMdDocument size={20}/>
+                          <IoMdDocument size={20} />
                         </button>
                       </div>
                     </TableCell>
