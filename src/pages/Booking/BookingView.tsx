@@ -19,48 +19,40 @@ export const BookingView = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
-      <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col justify-between w-full">
+    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-6 pt-4 shadow-sm dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex w-full flex-col">
           <h3 className="text-xl font-semibold text-gray-800 dark:text-white/90">
             Booking List
           </h3>
-          <div className="flex flex-row gap-2 items-center justify-between w-full">
-            <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-              Total Bookings: {bookings?.length}
-            </p>
-          </div>
+          <p className="text-sm text-gray-500 mt-1">
+            Total {bookings?.length} bookings found
+          </p>
         </div>
       </div>
 
-      {/* Desktop Table (shown on md screens and up) */}
-      <div className="hidden md:block w-full overflow-x-auto">
-        <Table className="min-w-[900px] w-full">
-          <TableHeader className="border-y border-gray-100 dark:border-gray-800">
-            <TableRow>
-              <TableCell isHeader className="py-3 font-medium text-start">
+      {/* Desktop Table */}
+      <div className="hidden w-full overflow-x-auto md:block">
+        <Table className="w-full">
+          <TableHeader className="border-b border-gray-100 dark:border-gray-800">
+            <TableRow className="bg-gray-50 dark:bg-gray-800/50">
+              <TableCell isHeader className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">
                 Customer
               </TableCell>
-              <TableCell isHeader className="py-3 font-medium text-start">
+              <TableCell isHeader className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                 Camera
               </TableCell>
-              <TableCell isHeader className="py-3 font-medium text-start">
-                Booking Date
+              <TableCell isHeader className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                Date/Duration
               </TableCell>
-              <TableCell isHeader className="py-3 font-medium text-start">
-                Duration
+              <TableCell isHeader className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                Amount
               </TableCell>
-              <TableCell isHeader className="py-3 font-medium text-start">
-                Total Price
+              <TableCell isHeader className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                Status
               </TableCell>
-              <TableCell isHeader className="py-3 font-medium text-start">
-                Booking Status
-              </TableCell>
-              <TableCell isHeader className="py-3 font-medium text-start">
-                Payment Status
-              </TableCell>
-              <TableCell isHeader className="py-3 font-medium text-start">
-                Actions
+              <TableCell isHeader className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <span className="sr-only">Actions</span>
               </TableCell>
             </TableRow>
           </TableHeader>
@@ -69,51 +61,53 @@ export const BookingView = () => {
           ) : (
             <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
               {bookings?.map((booking) => (
-                <TableRow key={booking.id}>
-                  <TableCell>
+                <TableRow key={booking.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/30">
+                  <TableCell className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                     <div className="flex flex-col">
-                      <span className="font-medium">{booking.user.name}</span>
-                      <span className="text-sm text-gray-500">
-                        {booking.user.email}
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {booking.user.name}
                       </span>
-                      <span className="text-sm text-gray-500">
-                        {booking.user.phoneNumber}
+                      <span className="text-xs text-gray-500">
+                        {booking.user.email}
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap px-3 py-4 text-sm">
                     <div className="flex items-center gap-3">
                       <img
                         src={booking.camera.imageUrl}
                         alt={booking.camera.name}
-                        className="w-10 h-10 rounded object-cover"
+                        className="h-10 w-10 rounded object-cover"
                       />
                       <div>
-                        <span className="font-medium block">
+                        <span className="font-medium text-gray-900 dark:text-white">
                           {booking.camera.name}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          {formatRupiah(booking.totalPrice)}
                         </span>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>{formatDate(booking.date)}</TableCell>
-                  <TableCell>{booking.duration} day(s)</TableCell>
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <div className="flex flex-col">
+                      <span>{formatDate(booking.date)}</span>
+                      <span className="text-xs">{booking.duration} day(s)</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 dark:text-white">
                     {formatRupiah(booking.totalPrice)}
                   </TableCell>
-                  <TableCell>{getStatusBadge(booking.status)}</TableCell>
-                  <TableCell>
-                    {booking.payment ? getPaymentStatusBadge(booking.payment.status) : 'N/A'}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <button className="text-blue-500 hover:text-blue-700 text-sm" onClick={() => navigate(`/booking/${booking.id}`)}>
-                        View
-                      </button>
-                      
+                  <TableCell className="whitespace-nowrap px-3 py-4 text-sm">
+                    <div className="flex flex-col gap-1">
+                      {getStatusBadge(booking.status)}
+                      {booking.payment && getPaymentStatusBadge(booking.payment.status)}
                     </div>
+                  </TableCell>
+                  <TableCell className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    <button
+                      onClick={() => navigate(`/booking/${booking.id}`)}
+                      className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      View
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -122,61 +116,57 @@ export const BookingView = () => {
         </Table>
       </div>
 
-      {/* Mobile Cards (shown on screens smaller than md) */}
-      <div className="md:hidden space-y-4">
+      {/* Mobile Cards */}
+      <div className="space-y-4 md:hidden">
         {isLoading ? (
           <CardSkeleton height="h-[200px]" />
         ) : (
           bookings?.map((booking) => (
             <div
               key={booking.id}
-              className="p-4 border border-gray-200 rounded-lg dark:border-gray-800"
+              className="rounded-lg border border-gray-200 p-4 shadow-sm dark:border-gray-800"
             >
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
                   <img
                     src={booking.camera.imageUrl}
                     alt={booking.camera.name}
-                    className="w-12 h-12 rounded object-cover"
+                    className="h-12 w-12 rounded object-cover"
                   />
                   <div>
-                    <h4 className="font-medium">{booking.camera.name}</h4>
+                    <h4 className="font-medium text-gray-900 dark:text-white">
+                      {booking.camera.name}
+                    </h4>
                     <p className="text-sm text-gray-500">
                       {formatRupiah(booking.totalPrice)}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col items-end gap-2">
+                <div className="flex flex-col items-end gap-1">
                   {getStatusBadge(booking.status)}
-                  {booking.payment ? getPaymentStatusBadge(booking.payment.status) : 'N/A'}
+                  {booking.payment && getPaymentStatusBadge(booking.payment.status)}
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
+              <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <p className="text-gray-500">Customer</p>
+                  <p className="text-xs text-gray-500">Customer</p>
                   <p className="font-medium">{booking.user.name}</p>
+                  <p className="text-xs text-gray-500">{booking.user.phoneNumber}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Date</p>
+                  <p className="text-xs text-gray-500">Date/Duration</p>
                   <p>{formatDate(booking.date)}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500">Duration</p>
-                  <p>{booking.duration} day(s)</p>
-                </div>
-                <div>
-                  <p className="text-gray-500">Contact</p>
-                  <p>{booking.user.phoneNumber}</p>
+                  <p className="text-xs">{booking.duration} day(s)</p>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 mt-3">
-                <button className="text-blue-500 hover:text-blue-700 text-sm px-3 py-1 border border-blue-500 rounded">
-                  View
-                </button>
-                <button className="text-red-500 hover:text-red-700 text-sm px-3 py-1 border border-red-500 rounded">
-                  Cancel
+              <div className="mt-4 flex justify-end gap-2">
+                <button
+                  onClick={() => navigate(`/booking/${booking.id}`)}
+                  className="rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
+                >
+                  View Details
                 </button>
               </div>
             </div>

@@ -21,7 +21,7 @@ export const getStatusBadge = (status: string) => {
         </Badge>
       );
     default:
-      return <Badge>{status}</Badge>;
+      return <Badge border>{status}</Badge>;
   }
 };
 
