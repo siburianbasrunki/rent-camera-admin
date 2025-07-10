@@ -1,11 +1,39 @@
-import { useCameraById } from "../../hooks/camera";
+import {
+  useAddCameraPhoto,
+  useCameraById,
+  useCameraPhotos,
+  useDeleteCameraPhoto,
+} from "../../hooks/camera";
 import { CardSkeleton } from "../../components/ui/skeleton/Skeleton";
 import Badge from "../../components/ui/badge/Badge";
 import { useNavigate } from "react-router-dom";
+import { formatRupiah } from "../../helper/formatter";
+import { PiFilePlus, PiPlus } from "react-icons/pi";
+import { CiTrash } from "react-icons/ci";
+import { useState } from "react";
 
 export const DetailCamera = () => {
   const { data: detailCamera, isLoading } = useCameraById();
+  const { data: photos = [] } = useCameraPhotos();
+  const { mutate: addPhoto } = useAddCameraPhoto();
+  const { mutate: deletePhoto } = useDeleteCameraPhoto();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("image", file);
+      addPhoto(formData);
+    }
+  };
+
+  const handleDeletePhoto = (photoId: string) => {
+    if (window.confirm("Are you sure you want to delete this photo?")) {
+      deletePhoto(photoId);
+    }
+  };
 
   if (isLoading) return <CardSkeleton height="h-[500px]" />;
 
@@ -84,8 +112,8 @@ export const DetailCamera = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-3xl font-bold text-gray-800 dark:text-white/90">
-              ${detailCamera.price}
+            <span className="text-2xl font-bold text-gray-800 dark:text-white/90">
+              {formatRupiah(Number(detailCamera.price))}/day
             </span>
             <Badge
               border
@@ -129,7 +157,7 @@ export const DetailCamera = () => {
                     Price
                   </p>
                   <p className="font-medium text-gray-800 dark:text-white/90">
-                    ${detailCamera.price}
+                    {formatRupiah(Number(detailCamera.price))}/day
                   </p>
                 </div>
                 <div>
@@ -137,7 +165,7 @@ export const DetailCamera = () => {
                     Status
                   </p>
                   <p className="font-medium text-gray-800 dark:text-white/90">
-                    {detailCamera.avaliable ? "Available" : "Not Available"}
+                    {detailCamera.avaliable ? "Tersedia" : "Disewa"}
                   </p>
                 </div>
               </div>
@@ -160,7 +188,91 @@ export const DetailCamera = () => {
                 </ul>
               </div>
             )}
+          </div>
+        </div>
+      </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Image Section */}
+        <div className="space-y-4 mt-2">
+          
+
+          {/* Additional Photos */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
+                Additional Photos
+              </h3>
+              {photos.length < 5 && (
+                <label className="flex items-center gap-1 text-sm text-blue-500 cursor-pointer hover:text-blue-600">
+                  <PiPlus />
+                  Add Photo
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
+              )}
+            </div>
+
+            <div className="grid grid-cols-4 gap-2">
+              {/* Main photo thumbnail */}
+              <div
+                className={`relative h-24 rounded-md overflow-hidden border-2 ${
+                  !selectedImage ? "border-blue-500" : "border-transparent"
+                }`}
+                onClick={() => setSelectedImage(detailCamera.imageUrl)}
+              >
+                <img
+                  src={detailCamera.imageUrl}
+                  alt="Main"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Additional photos */}
+              {photos.map((photo: any) => (
+                <div
+                  key={photo.id}
+                  className={`relative h-24 rounded-md overflow-hidden border-2 ${
+                    selectedImage === photo.imageUrl
+                      ? "border-blue-500"
+                      : "border-transparent"
+                  }`}
+                >
+                  <img
+                    src={photo.imageUrl}
+                    alt={`Photo ${photo.id}`}
+                    className="w-full h-full object-cover"
+                    onClick={() => setSelectedImage(photo.imageUrl)}
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletePhoto(photo.id);
+                    }}
+                    className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                  >
+                    <CiTrash size={12} />
+                  </button>
+                </div>
+              ))}
+
+              {/* Add photo placeholder */}
+              {photos.length < 4 && (
+                <label className="flex items-center justify-center h-24 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:border-blue-500">
+                  <PiFilePlus className="text-gray-400" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
+              )}
+            </div>
           </div>
         </div>
       </div>

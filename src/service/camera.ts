@@ -42,21 +42,47 @@ const CameraService = {
   },
 
   async deleteCamera(id: string): Promise<void> {
-  const { camera } = getEndpoints();
-  const res = await fetch(`${camera}/${id}`, {
-    method: "DELETE",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.error || `HTTP error! status: ${res.status}`);
-  }
-  
-  return;
-},
+    const { camera } = getEndpoints();
+    const res = await fetch(`${camera}/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.error || `HTTP error! status: ${res.status}`);
+    }
+
+    return;
+  },
+   async getCameraPhotos(cameraId: string) {
+    const { camera } = getEndpoints();
+    const res = await fetch(`${camera}/${cameraId}/photos`);
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    const json = await res.json();
+    return json.data;
+  },
+  async addCameraPhoto(cameraId: string, formData: FormData) {
+    const { camera } = getEndpoints();
+    const res = await fetch(`${camera}/${cameraId}/photos`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    const json = await res.json();
+    return json.data;
+  },
+
+  async deleteCameraPhoto(photoId: string) {
+    const { camera } = getEndpoints();
+    const res = await fetch(`${camera}/photos/${photoId}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    return;
+  },
 };
 
 export default CameraService;
