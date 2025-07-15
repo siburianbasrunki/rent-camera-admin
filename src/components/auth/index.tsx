@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../service/auth";
 import { useAuth } from "../../context/AuthContext";
@@ -8,9 +8,16 @@ export const OtpPage = () => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { email, setToken, setUser,token } = useAuth();
+  const { email, setToken, setUser, token } = useAuth();
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   console.log("token", token);
-  
+
+  useEffect(() => {
+    if (inputRefs.current[0]) {
+      inputRefs.current[0].focus();
+    }
+  }, []);
+
   const handleChange = (index: number, value: string) => {
     if (value && !/^\d+$/.test(value)) return;
 
@@ -18,10 +25,30 @@ export const OtpPage = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-    // Auto focus to next input
     if (value && index < 3) {
-      const nextInput = document.getElementById(`otp-${index + 1}`);
+      const nextInput = inputRefs.current[index + 1];
       if (nextInput) nextInput.focus();
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData('text/plain').trim();
+    
+    if (/^\d{4}$/.test(pastedData)) {
+      const pastedOtp = pastedData.split('');
+      const newOtp = [...otp];
+      
+      pastedOtp.forEach((digit, index) => {
+        if (index < 4) {
+          newOtp[index] = digit;
+        }
+      });
+      
+      setOtp(newOtp);
+      
+      const lastInput = inputRefs.current[Math.min(3, pastedOtp.length - 1)];
+      if (lastInput) lastInput.focus();
     }
   };
 
@@ -50,7 +77,7 @@ export const OtpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 w-full">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <h2 className="text-2xl font-bold text-blue-700 text-center mb-6">
           OTP Verification
@@ -71,6 +98,9 @@ export const OtpPage = () => {
               {otp.map((digit, index) => (
                 <input
                   key={index}
+                  ref={(el) => {
+                    inputRefs.current[index] = el;
+                  }}
                   id={`otp-${index}`}
                   type="text"
                   className="w-full text-center px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -78,6 +108,7 @@ export const OtpPage = () => {
                   maxLength={1}
                   value={digit}
                   onChange={(e) => handleChange(index, e.target.value)}
+                  onPaste={handlePaste}
                   required
                 />
               ))}
