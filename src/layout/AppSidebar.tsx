@@ -15,7 +15,7 @@ import { useSidebar } from "../context/SidebarContext";
 import { TbBrandBooking } from "react-icons/tb";
 import { CiLogout } from "react-icons/ci";
 import { PiFlagBanner } from "react-icons/pi";
-import { FaCameraRetro } from "react-icons/fa";
+import { FaAddressCard, FaCameraRetro } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { useConfirmation } from "../components/ui/alert/PopUp";
 
@@ -56,7 +56,12 @@ const navItems: NavItem[] = [
     icon: <TbBrandBooking />,
     name: "Booking",
     path: "/booking",
-  }
+  },
+  {
+    icon: <FaAddressCard />,
+    name: "Address",
+    path: "/address",
+  },
 ];
 
 const othersItems: NavItem[] = [
@@ -69,7 +74,7 @@ const othersItems: NavItem[] = [
     icon: <CiLogout />,
     name: "Logout",
     // Remove path since we'll handle this with onClick
-  }
+  },
 ];
 
 const AppSidebar: React.FC = () => {
@@ -89,12 +94,13 @@ const AppSidebar: React.FC = () => {
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const isActive = useCallback(
-  (path: string) => {
-    return location.pathname === path || 
-           location.pathname.startsWith(`${path}/`);
-  },
-  [location.pathname]
-);
+    (path: string) => {
+      return (
+        location.pathname === path || location.pathname.startsWith(`${path}/`)
+      );
+    },
+    [location.pathname]
+  );
   // Handle logout with confirmation
   const handleLogout = () => {
     showConfirmation("Apakah Anda yakin ingin logout?", () => {

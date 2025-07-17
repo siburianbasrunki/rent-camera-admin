@@ -30,6 +30,7 @@ import { ProtectedRoute } from "./pages/AuthPages/ProtectedRoute";
 import { BookingView } from "./pages/Booking/BookingView";
 import { DetailCamera } from "./pages/camera/DetailCamera";
 import { DetailBooking } from "./pages/Booking/BookingDetail";
+import { LocationView } from "./pages/Location/Location";
 
 // Inisialisasi QueryClient
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ export default function App() {
                 <Route path="/users" element={<UserView />} />
                 <Route path="/booking" element={<BookingView />} />
                 <Route path="/booking/:id" element={<DetailBooking />} />
+                <Route path="/address" element={<LocationView />} />
                 <Route path="/profile" element={<UserProfiles />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/blank" element={<Blank />} />
