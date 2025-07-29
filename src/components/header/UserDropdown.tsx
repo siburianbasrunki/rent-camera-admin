@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useNavigate } from "react-router";
 import {  useUserByIdOld } from "../../hooks/user";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/shared/context/auth-context";
 import { useConfirmation } from "../ui/alert/PopUp";
 // import ProfilePic from "../../../public/images/user/bas.jpg";
 export default function UserDropdown() {

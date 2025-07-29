@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
-import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
+import { ThemeToggle } from "@/shared/components/ui/theme";
 import UserDropdown from "../components/header/UserDropdown";
 import Logo from "../../public/images/logo/rent-cam-logo.svg";
 
@@ -122,7 +122,7 @@ const AppHeader: React.FC = () => {
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
             {/* <!-- Dark Mode Toggler --> */}
-            <ThemeToggleButton />
+            <ThemeToggle />
             {/* <!-- Dark Mode Toggler --> */}
           </div>
           {/* <!-- User Area --> */}
