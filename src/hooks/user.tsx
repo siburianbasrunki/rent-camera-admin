@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import UserService from "../service/user";
-import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { useUser } from "@/shared/hooks/useUser";
 
 export const useUsers = () => {
   return useQuery({
@@ -11,17 +11,17 @@ export const useUsers = () => {
 };
 
 export const useUserByIdOld = () => {
-  const { user } = useAuth();
+  const { data: user } = useUser();
+  const userData = user?.data?.data;
   return useQuery({
-    queryKey: ["cameras", user?.id],
+    queryKey: ["cameras", userData?.id],
     queryFn: () => {
       if (!user) throw new Error("No ID provided");
-      return UserService.getUserById(user.id);
+      return UserService.getUserById(userData?.id ?? "");
     },
     enabled: !!user,
   });
 };
-
 
 export const useUserById = (id?: string) => {
   return useQuery({
@@ -37,7 +37,7 @@ export const useUserById = (id?: string) => {
 export const useUserMutations = () => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
-   const createMutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: ({ formData }: { formData: FormData }) =>
       UserService.createUser(formData),
     onSuccess: () => {

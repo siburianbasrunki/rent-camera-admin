@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import Logo from "../../public/images/logo/rent-cam-logo.svg";
-import Logo2 from "../../public/images/logo/Rent-Cam.svg";
+import Logo2 from "../../public/images/logo/rentbq.svg";
 // Assume these icons are imported from an icon library
 import {
   BoxIconLine,
@@ -16,7 +16,7 @@ import { TbBrandBooking } from "react-icons/tb";
 import { CiLogout } from "react-icons/ci";
 import { PiFlagBanner } from "react-icons/pi";
 import { FaAddressCard, FaCameraRetro } from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "@/shared/context/auth-context";
 import { useConfirmation } from "../components/ui/alert/PopUp";
 
 type NavItem = {

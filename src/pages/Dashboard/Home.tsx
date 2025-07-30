@@ -1,12 +1,8 @@
 import RecentOrders from "../../components/ecommerce/RecentOrders";
 import PageMeta from "../../components/common/PageMeta";
 import DashboardMetrics from "../../components/ecommerce/DashboardMetrics";
-import { useAuth } from "../../context/AuthContext";
 
 export default function Home() {
-  const { token } = useAuth();
-  console.log("token", token);
-
   return (
     <>
       <PageMeta title="Rent-Cam" description="This is Rent-Cam Management" />
